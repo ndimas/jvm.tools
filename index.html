@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,201 +10,229 @@
     <script defer data-domain="jvm.tools" src="https://plausible.io/js/script.outbound-links.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f9f9f9;
-            transition: background-color 0.3s, color 0.3s;
+            background-color: #f5f5f5;
+            position: relative;
         }
 
-        body.dark-mode {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-        }
-
-        header {
-            background-color: #3498db;
-            padding: 20px;
+        .header {
             text-align: center;
-            color: white;
+            padding: 40px 20px;
+            background-color: #fff;
+            margin-bottom: 40px;
+            position: relative;
         }
 
         h1 {
-            color: #ffffff;
-        }
-
-        nav {
-            margin: 20px 0;
-        }
-
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        h2 {
             color: #2c3e50;
-            margin-top: 30px;
+            font-size: 2.5rem;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #444;
+            margin: 0;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .moon-icon {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: #666;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.2s;
         }
 
         section {
             background: white;
+            padding: 30px;
+            margin-bottom: 30px;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        body.dark-mode section {
-            background: #34495e;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        h2 {
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
         }
 
         ul {
-            padding-left: 20px;
+            list-style-type: none;
+            padding: 0;
         }
 
         li {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         a {
-            color: #2980b9;
+            color: #3498db;
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         a:hover {
+            color: #2980b9;
             text-decoration: underline;
         }
 
-        @media (max-width: 600px) {
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .header {
+            background-color: #2c3e50;
+        }
+
+        body.dark-mode h1 {
+            color: #fff;
+        }
+
+        body.dark-mode .subtitle {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode section {
+            background-color: #2c3e50;
+        }
+
+        body.dark-mode h2 {
+            color: #3498db;
+        }
+
+        body.dark-mode a {
+            color: #5dade2;
+        }
+
+        body.dark-mode a:hover {
+            color: #3498db;
+        }
+
+        body.dark-mode .moon-icon {
+            stroke: #fff;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
             body {
                 padding: 10px;
             }
-        }
 
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #3498db;
-            color: white;
-            border-radius: 8px;
-        }
+            .header {
+                padding: 20px 10px;
+            }
 
-        .github-link img {
-            width: 24px;
-            height: 24px;
-            vertical-align: middle;
-        }
+            section {
+                padding: 20px;
+            }
 
-        .theme-toggle {
-            cursor: pointer;
-            background-color: #ffffff;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .theme-toggle:hover {
-            background-color: #ecf0f1;
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+            }
         }
     </style>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "JVM Tools",
-        "url": "https://jvm.tools",
-        "description": "Essential resources for Java Virtual Machine development."
-    }
-    </script>
 </head>
-
 <body>
-    <header>
+    <div class="header">
         <h1>JVM Tools</h1>
-        <p>Essential Resources for Java Virtual Machine Development</p>
-        <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
-        <nav>
-            <a href="#performance">Performance Monitoring</a>
-            <a href="#debugging">Debugging</a>
-            <a href="#memory">Memory Management</a>
-            <a href="#bytecode">Bytecode Manipulation</a>
-            <a href="#build">Build Tools</a>
-        </nav>
-    </header>
+        <p class="subtitle">Essential Resources for Java Virtual Machine Development</p>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+        </button>
+    </div>
 
-    <main>
-        <section id="performance">
-            <h2>Performance Monitoring and Profiling</h2>
-            <ul>
-                <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/">JVM TI (JVM Tool Interface)</a> - A native programming interface for inspecting and controlling the state of a running Java application.</li>
-                <li><a href="https://github.com/jvm-profiling-tools/async-profiler">async-profiler</a> - A low overhead sampling profiler for Java featuring flame graphs, ideal for performance analysis.</li>
-                <li><a href="https://www.yourkit.com/">YourKit Java Profiler</a> - A feature-rich Java profiler for in-depth memory and CPU analysis, helping developers optimize their applications.</li>
-            </ul>
-        </section>
+    <section>
+        <h2>Performance Monitoring and Profiling</h2>
+        <ul>
+            <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/">JVM TI (JVM Tool Interface)</a> - A native programming interface for inspecting and controlling the state of a running Java application.</li>
+            <li><a href="https://github.com/jvm-profiling-tools/async-profiler">async-profiler</a> - A low overhead sampling profiler for Java featuring flame graphs, ideal for performance analysis.</li>
+            <li><a href="https://www.yourkit.com/">YourKit Java Profiler</a> - A feature-rich Java profiler for in-depth memory and CPU analysis, helping developers optimize their applications.</li>
+        </ul>
+    </section>
 
-        <section id="debugging">
-            <h2>Debugging and Diagnostics</h2>
-            <ul>
-                <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/toc.html">jconsole</a> - A monitoring tool for Java applications, included in the JDK, providing real-time monitoring capabilities.</li>
-                <li><a href="https://github.com/openjdk/jmc">JDK Mission Control</a> - A powerful profiling and diagnostics tools suite for the JVM, offering advanced analysis features.</li>
-                <li><a href="https://github.com/Netflix/vector">Vector</a> - An on-host performance monitoring framework that exposes high-resolution metrics to engineers' browsers. (This repository has been archived on Aug 21, 2021.)</li>
-            </ul>
-        </section>
+    <section>
+        <h2>Debugging and Diagnostics</h2>
+        <ul>
+            <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/toc.html">jconsole</a> - A monitoring tool for Java applications, included in the JDK, providing real-time monitoring capabilities.</li>
+            <li><a href="https://github.com/openjdk/jmc">JDK Mission Control</a> - A powerful profiling and diagnostics tools suite for the JVM, offering advanced analysis features.</li>
+            <li><a href="https://github.com/Netflix/vector">Vector</a> - An on-host performance monitoring framework that exposes high-resolution metrics to engineers' browsers. (This repository has been archived on Aug 21, 2021.)</li>
+        </ul>
+    </section>
 
-        <section id="memory">
-            <h2>Memory Management</h2>
-            <ul>
-                <li><a href="https://www.eclipse.org/mat/">Eclipse Memory Analyzer (MAT)</a> - A fast and feature-rich Java heap analyzer that helps identify memory leaks and optimize memory usage.</li>
-                <li><a href="https://github.com/jbellis/jamm">Java Agent for Memory Measurements (JAMM)</a> - A Java agent for measuring actual object memory use, including JVM overhead, to improve memory efficiency.</li>
-            </ul>
-        </section>
+    <section>
+        <h2>Memory Management</h2>
+        <ul>
+            <li><a href="https://www.eclipse.org/mat/">Eclipse Memory Analyzer (MAT)</a> - A fast and feature-rich Java heap analyzer that helps identify memory leaks and optimize memory usage.</li>
+            <li><a href="https://github.com/jbellis/jamm">Java Agent for Memory Measurements (JAMM)</a> - A Java agent for measuring actual object memory use, including JVM overhead, to improve memory efficiency.</li>
+        </ul>
+    </section>
 
-        <section id="bytecode">
-            <h2>Bytecode Manipulation</h2>
-            <ul>
-                <li><a href="https://asm.ow2.io/">ASM</a> - A Java bytecode manipulation and analysis framework that allows developers to modify existing classes and create new ones.</li>
-                <li><a href="https://github.com/cglib/cglib">cglib</a> - A high-level API to generate and transform Java bytecode, useful for creating proxies and enhancing classes at runtime.</li>
-            </ul>
-        </section>
+    <section>
+        <h2>Bytecode Manipulation</h2>
+        <ul>
+            <li><a href="https://asm.ow2.io/">ASM</a> - A Java bytecode manipulation and analysis framework that allows developers to modify existing classes and create new ones.</li>
+            <li><a href="https://github.com/cglib/cglib">cglib</a> - A high-level API to generate and transform Java bytecode, useful for creating proxies and enhancing classes at runtime.</li>
+        </ul>
+    </section>
 
-        <section id="build">
-            <h2>Build Tools and Dependency Management</h2>
-            <ul>
-                <li><a href="https://maven.apache.org/">Apache Maven</a> - A popular build automation and project management tool that simplifies the process of managing project dependencies.</li>
-                <li><a href="https://gradle.org/">Gradle</a> - A flexible and powerful build automation tool that supports multi-project builds and custom build logic.</li>
-            </ul>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 jvm.tools. All rights reserved.</p>
-        <p>
-            <a class="github-link" href="https://github.com/ndimas/jvm.tools">
-                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo"> View on GitHub
-            </a>
-        </p>
-    </footer>
+    <section>
+        <h2>Build Tools and Dependency Management</h2>
+        <ul>
+            <li><a href="https://maven.apache.org/">Apache Maven</a> - A popular build automation and project management tool that simplifies the process of managing project dependencies.</li>
+            <li><a href="https://gradle.org/">Gradle</a> - A flexible and powerful build automation tool that supports multi-project builds and custom build logic.</li>
+        </ul>
+    </section>
 
     <script>
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // Restore theme preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
         }
     </script>
 </body>
-
 </html>
