@@ -2,72 +2,77 @@
 <html lang="en">
 
 <head>
-    <!DOCTYPE html>
-    <html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JVM Tools - Essential Resources for Java Virtual Machine Development</title>
+    <meta name="description" content="Discover essential Java Virtual Machine (JVM) tools and resources to optimize your Java development workflow.">
+    <meta name="keywords" content="JVM, Java, tools, performance monitoring, profiling, debugging, memory management, bytecode manipulation, build tools">
+    <meta name="author" content="JVM Tools Team">
+    <script defer data-domain="jvm.tools" src="https://plausible.io/js/script.outbound-links.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JVM Tools - Essential Resources for Java Virtual Machine Development</title>
+        header {
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
 
-        <meta name="description"
-            content="Discover the most important Java Virtual Machine (JVM) tools and resources. Optimize your Java development workflow with our curated list of essential JVM utilities.">
-        <script defer data-domain="jvm.tools" src="https://plausible.io/js/script.outbound-links.js"></script>
-        <style>
+        h1 {
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
             body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                color: #333;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
+                padding: 10px;
             }
+        }
 
-            header {
-                background-color: #f4f4f4;
-                padding: 20px;
-                text-align: center;
-            }
-
-            h1 {
-                color: #2c3e50;
-            }
-
-            h2 {
-                color: #3498db;
-                margin-top: 30px;
-            }
-
-            ul {
-                padding-left: 20px;
-            }
-
-            li {
-                margin-bottom: 10px;
-            }
-
-            a {
-                color: #2980b9;
-                text-decoration: none;
-            }
-
-            a:hover {
-                text-decoration: underline;
-            }
-
-            @media (max-width: 600px) {
-                body {
-                    padding: 10px;
-                }
-            }
-
-            .github-link img {
-                width: 24px;
-                height: 24px;
-                vertical-align: middle;
-            }
-        </style>
-    </head>
+        .github-link img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "JVM Tools",
+        "url": "https://jvm.tools",
+        "description": "Essential resources for Java Virtual Machine development."
+    }
+    </script>
+</head>
 
 <body>
     <header>
@@ -79,53 +84,42 @@
         <section>
             <h2>Performance Monitoring and Profiling</h2>
             <ul>
-                <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/">JVM TI (JVM Tool Interface)</a> - A
-                    native programming interface for inspecting and controlling the state of a running Java application.
-                </li>
-                <li><a href="https://github.com/jvm-profiling-tools/async-profiler">async-profiler</a> - A low overhead
-                    sampling profiler for Java featuring flame graphs.</li>
-                <li><a href="https://www.yourkit.com/">YourKit Java Profiler</a> - A feature-rich Java profiler for
-                    memory and CPU analysis.</li>
+                <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/">JVM TI (JVM Tool Interface)</a> - A native programming interface for inspecting and controlling the state of a running Java application.</li>
+                <li><a href="https://github.com/jvm-profiling-tools/async-profiler">async-profiler</a> - A low overhead sampling profiler for Java featuring flame graphs, ideal for performance analysis.</li>
+                <li><a href="https://www.yourkit.com/">YourKit Java Profiler</a> - A feature-rich Java profiler for in-depth memory and CPU analysis, helping developers optimize their applications.</li>
             </ul>
         </section>
 
         <section>
             <h2>Debugging and Diagnostics</h2>
             <ul>
-                <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/toc.html">jconsole</a>
-                    - A monitoring tool for Java applications, included in the JDK.</li>
-                <li><a href="https://github.com/openjdk/jmc">JDK Mission Control</a> - A powerful profiling and
-                    diagnostics tools suite for the JVM.</li>
-                <li><a href="https://github.com/Netflix/vector">Vector</a> - An on-host performance monitoring framework
-                    which exposes hand-picked high-resolution metrics to every engineer's browser. (This repository has been archived on Aug 21, 2021.)</li>
+                <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/toc.html">jconsole</a> - A monitoring tool for Java applications, included in the JDK, providing real-time monitoring capabilities.</li>
+                <li><a href="https://github.com/openjdk/jmc">JDK Mission Control</a> - A powerful profiling and diagnostics tools suite for the JVM, offering advanced analysis features.</li>
+                <li><a href="https://github.com/Netflix/vector">Vector</a> - An on-host performance monitoring framework that exposes high-resolution metrics to engineers' browsers. (This repository has been archived on Aug 21, 2021.)</li>
             </ul>
         </section>
 
         <section>
             <h2>Memory Management</h2>
             <ul>
-                <li><a href="https://www.eclipse.org/mat/">Eclipse Memory Analyzer (MAT)</a> - A fast and feature-rich
-                    Java heap analyzer.</li>
-                <li><a href="https://github.com/jbellis/jamm">Java Agent for Memory Measurements (JAMM)</a> - A Java
-                    agent for measuring actual object memory use including JVM overhead.</li>
+                <li><a href="https://www.eclipse.org/mat/">Eclipse Memory Analyzer (MAT)</a> - A fast and feature-rich Java heap analyzer that helps identify memory leaks and optimize memory usage.</li>
+                <li><a href="https://github.com/jbellis/jamm">Java Agent for Memory Measurements (JAMM)</a> - A Java agent for measuring actual object memory use, including JVM overhead, to improve memory efficiency.</li>
             </ul>
         </section>
 
         <section>
             <h2>Bytecode Manipulation</h2>
             <ul>
-                <li><a href="https://asm.ow2.io/">ASM</a> - A Java bytecode manipulation and analysis framework.</li>
-                <li><a href="https://github.com/cglib/cglib">cglib</a> - A high-level API to generate and transform Java
-                    bytecode.</li>
+                <li><a href="https://asm.ow2.io/">ASM</a> - A Java bytecode manipulation and analysis framework that allows developers to modify existing classes and create new ones.</li>
+                <li><a href="https://github.com/cglib/cglib">cglib</a> - A high-level API to generate and transform Java bytecode, useful for creating proxies and enhancing classes at runtime.</li>
             </ul>
         </section>
 
         <section>
             <h2>Build Tools and Dependency Management</h2>
             <ul>
-                <li><a href="https://maven.apache.org/">Apache Maven</a> - A popular build automation and project
-                    management tool.</li>
-                <li><a href="https://gradle.org/">Gradle</a> - A flexible and powerful build automation tool.</li>
+                <li><a href="https://maven.apache.org/">Apache Maven</a> - A popular build automation and project management tool that simplifies the process of managing project dependencies.</li>
+                <li><a href="https://gradle.org/">Gradle</a> - A flexible and powerful build automation tool that supports multi-project builds and custom build logic.</li>
             </ul>
         </section>
     </main>
@@ -134,8 +128,7 @@
         <p>&copy; 2024 jvm.tools. All rights reserved.</p>
         <p>
             <a class="github-link" href="https://github.com/ndimas/jvm.tools">
-                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub"> View
-                on GitHub
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo"> View on GitHub
             </a>
         </p>
     </footer>
