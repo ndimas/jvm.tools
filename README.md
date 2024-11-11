@@ -56,6 +56,3 @@ Feel free to reach out if you have any questions or suggestions!
 - [Main Page](index.html)
 - [Books Page](books.html)
 
----
-
-[![Run on Replit](https://replit.com/badge/github/replit/clui)](https://replit.com/github/your-repository-link)```
