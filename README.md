@@ -1,7 +1,5 @@
 # JVM Tools - Essential Resources for Java Virtual Machine Development
 
-![GitHub](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
-
 ## Description
 
 This repository contains a collection of essential resources and tools for Java Virtual Machine (JVM) development. From performance monitoring and profiling tools to debugging and diagnostics utilities, this project aims to help Java developers optimize their workflow and improve their applications.
@@ -16,28 +14,16 @@ This repository contains a collection of essential resources and tools for Java 
 
 ## Installation
 
-To clone and run this repository locally:
+To clone this repository:
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-repository-link.git
-    cd your-repository-folder
-    ```
-
-2. If you are using a local web server, ensure it is configured to serve the `index.html` file. For example, you can use Python to run a local server:
-    ```bash
-    python -m http.server
-    ```
-   Or use Node.js with a simple server setup:
-
-    ```bash
-    npm install express
-    node server.js
-    ```
+```bash
+git clone https://github.com/ndimas/jvm.tools.git
+cd jvm.tools
+```
 
 ## Usage
 
-Open your web browser and navigate to `http://localhost:8000` (or the port number your server is running on). You will see a collection of essential JVM tools and resources.
+Open `index.html` directly in your web browser to view the collection of essential JVM tools and resources.
 
 ### Pages
 
