@@ -1,6 +1,7 @@
 import { join } from "node:path";
 
-const ROOT = process.cwd();
+// Serve the deploy output directory (what Cloudflare Pages publishes).
+const ROOT = join(process.cwd(), "site-public");
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -26,28 +27,23 @@ const server = Bun.serve({
     const url = new URL(req.url);
     const path = decodeURIComponent(url.pathname);
 
-    // Root -> index.html
     if (path === "/" || path === "/index.html") {
       const f = Bun.file(join(ROOT, "index.html"));
       if (await f.exists()) return new Response(f, { headers: { "content-type": MIME[".html"] } });
     }
-
-    // Clean-URL -> directory index: /tools/x/ -> /tools/x/index.html
     if (path.endsWith("/")) {
       const f = Bun.file(join(ROOT, path, "index.html"));
       if (await f.exists()) return new Response(f, { headers: { "content-type": MIME[".html"] } });
     }
-
-    // Direct file off root (strip leading slash)
     const rel = path.startsWith("/") ? path.slice(1) : path;
     const file = Bun.file(join(ROOT, rel));
     if (await file.exists()) {
       return new Response(file, { headers: { "content-type": typeFrom(path) } });
     }
-
     return new Response("Not found: " + path, { status: 404 });
   }
 });
 
 console.log("Preview server at http://localhost:" + server.port);
-console.log("Ctrl+C to stop. Try:  /  /tools/jvm-cli/jcmd/  /guides/jvm-flags/  /books/");
+console.log("Serving: " + ROOT);
+console.log("Ctrl+C to stop. Try: /  /tools/jvm-cli/jcmd/  /guides/jvm-flags/");

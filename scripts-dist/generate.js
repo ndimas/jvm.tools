@@ -1831,9 +1831,10 @@ var ctaBand = function() {
   return '<section class="cta-band"><h2>' + CTA_TITLE + "</h2><p>" + CTA_BODY + "</p>" + '<form id="jvmtool-cta-form" class="cta-form" ' + action + '><input type="email" name="email" placeholder="you@example.com" required><button>' + CTA_BUTTON + "</button></form>" + '<p id="cta-status" class="form-status"></p><p class="cta-note">One email. Free forever.</p>' + "<script>var SIGNUP_BOOL=" + (SIGNUP_URL ? "true" : "false") + ";</script>" + handler + "</section>";
 };
 var run = function() {
-  rmSync(join(OUT, "tools"), { recursive: true, force: true });
-  rmSync(join(OUT, "guides"), { recursive: true, force: true });
-  rmSync(join(OUT, "books"), { recursive: true, force: true });
+  rmSync(OUT, { recursive: true, force: true });
+  mkdirSync(OUT, { recursive: true });
+  writeFileSync(join(OUT, "_redirects"), REDIRECTS);
+  writeFileSync(join(OUT, "_headers"), HEADERS);
   mkdirSync(join(OUT, "assets"), { recursive: true });
   writeFileSync(join(OUT, "assets", "jvm-tools.css"), STYLES2);
   homepage();
@@ -1846,9 +1847,11 @@ var run = function() {
   console.log("\nBuild complete -> " + OUT);
 };
 var ROOT = process.cwd();
-var OUT = ROOT;
+var OUT = join(ROOT, "site-public");
 var LAST_BUILD = "2026-08-07";
 var CSS_HREF = "/assets/jvm-tools.css";
+var REDIRECTS = "/books.html  /books/  301\n/index.html  /  301\n/*.html  /:splat  301\n";
+var HEADERS = "/assets/*\n  Cache-Control: public, max-age=604800, immutable\n/*\n  Cache-Control: public, max-age=0, must-revalidate\n  X-Content-Type-Options: nosniff\n";
 var SIGNUP_URL = null;
 var CTA_TITLE = "Get the free JVM CLI cheat-sheet";
 var CTA_BODY = "A one-page printable reference of the jcmd, jstat, jmap, jstack and JFR commands that solve most production problems. No spam.";

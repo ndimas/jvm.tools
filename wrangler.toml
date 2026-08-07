@@ -1,12 +1,11 @@
 # Cloudflare Pages configuration
-# Build generates the static site; output is served from the repo root.
-# Uses a pre-bundled Node entry (scripts-dist/generate.js) so no bun is required
-# on the Pages build image. Regenerate the bundle locally after editing scripts/:
-#   bun build scripts/generate.ts --target=node --format=esm --outdir=scripts-dist
+# Build generates the static site into site-public/ which Pages serves.
+# The bundled Node entry runs on the Pages build image (no bun required).
+# Regenerate bundle after editing scripts/: bun build ... --outdir=scripts-dist
 
 name = "jvm-tools"
 compatibility_date = "2026-08-07"
-pages_build_output_dir = "."
+pages_build_output_dir = "site-public"
 
 [build]
 command = "node scripts-dist/generate.js"

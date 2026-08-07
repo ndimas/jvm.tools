@@ -22,7 +22,7 @@ Requires Bun (https://bun.sh).
 
     bun scripts/generate.ts
 
-That regenerates the whole static site into the repo root: index.html, tools/, guides/, books/, assets/, sitemap.xml, robots.txt.
+That regenerates the deployable site into ./site-public (index.html, tools/, guides/, books/, assets/, sitemap.xml, robots.txt, _headers, _redirects).
 
 ### Content lives in two data files
 

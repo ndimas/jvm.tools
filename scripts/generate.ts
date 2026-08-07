@@ -11,9 +11,12 @@ import { DEEP_DIVES, GUIDES, toolBySlug } from "./content.ts";
 import { STYLES as importedStyles } from "./style.ts";
 
 const ROOT = process.cwd();
-const OUT = ROOT;
+const OUT = join(ROOT, "site-public");
 const LAST_BUILD = "2026-08-07";
 const CSS_HREF = "/assets/jvm-tools.css";
+
+const REDIRECTS = "/books.html  /books/  301\n/index.html  /  301\n/*.html  /:splat  301\n";
+const HEADERS = "/assets/*\n  Cache-Control: public, max-age=604800, immutable\n/*\n  Cache-Control: public, max-age=0, must-revalidate\n  X-Content-Type-Options: nosniff\n";
 
 // ---- CTA / lead capture (editable) ----
 // Point SIGNUP_URL at your real list/CRM endpoint when you build one.
@@ -317,9 +320,11 @@ function ctaBand(){
 
 // ---------------- MAIN ----------------
 function run(){
-  rmSync(join(OUT,"tools"),{recursive:true,force:true});
-  rmSync(join(OUT,"guides"),{recursive:true,force:true});
-  rmSync(join(OUT,"books"),{recursive:true,force:true});
+  rmSync(OUT,{recursive:true,force:true});
+  mkdirSync(OUT,{recursive:true});
+  // CF Pages routing/caching config must live inside the deploy output dir
+  writeFileSync(join(OUT,"_redirects"), REDIRECTS);
+  writeFileSync(join(OUT,"_headers"), HEADERS);
   mkdirSync(join(OUT,"assets"),{recursive:true});
   writeFileSync(join(OUT,"assets","jvm-tools.css"), STYLES);
   homepage();
