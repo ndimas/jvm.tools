@@ -1,11 +1,12 @@
 {
   "name": "jvm-tools",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun scripts/generate.ts",
-    "preview": "bun preview.ts"
-  },
-  "devDependencies": {}
+    "build": "node scripts-dist/generate.js",
+    "build:source": "bun scripts/generate.ts",
+    "preview": "bun preview.ts",
+    "bundle:gen": "bun build scripts/generate.ts --target=node --format=esm --outdir=scripts-dist"
+  }
 }
