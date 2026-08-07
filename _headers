@@ -1,0 +1,7 @@
+# Cloudflare Pages custom headers (https://developers.cloudflare.com/pages/configuration/headers/)
+# Static cached assets stay cached; HTML stays fresh so updates are quick to pick up.
+/assets/*
+  Cache-Control: public, max-age=604800, immutable
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff

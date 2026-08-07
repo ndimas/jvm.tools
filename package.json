@@ -1,0 +1,11 @@
+{
+  "name": "jvm-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun scripts/generate.ts",
+    "preview": "bun preview.ts"
+  },
+  "devDependencies": {}
+}

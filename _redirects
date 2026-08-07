@@ -1,0 +1,8 @@
+# Cloudflare Pages redirects (https://developers.cloudflare.com/pages/configuration/redirects/)
+# Map legacy/old URLs to the new clean-URL locations so backlinks don't 404.
+
+/books.html            /books/                    301
+/index.html            /                          301
+
+# Convenience: drop trailing .html for any past links
+/*.html                /:splat                    301

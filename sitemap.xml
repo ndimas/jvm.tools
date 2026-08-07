@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://jvm.tools/</loc></url>
+  <url><loc>https://jvm.tools/tools/jvm-cli/</loc></url>
+  <url><loc>https://jvm.tools/tools/profiling/</loc></url>
+  <url><loc>https://jvm.tools/tools/memory/</loc></url>
+  <url><loc>https://jvm.tools/tools/bytecode/</loc></url>
+  <url><loc>https://jvm.tools/tools/build/</loc></url>
+  <url><loc>https://jvm.tools/tools/testing/</loc></url>
+  <url><loc>https://jvm.tools/tools/jvm-cli/jcmd/</loc></url>
+  <url><loc>https://jvm.tools/tools/jvm-cli/jfr/</loc></url>
+  <url><loc>https://jvm.tools/tools/jvm-cli/jmap/</loc></url>
+  <url><loc>https://jvm.tools/tools/jvm-cli/jstack/</loc></url>
+  <url><loc>https://jvm.tools/tools/jvm-cli/jstat/</loc></url>
+  <url><loc>https://jvm.tools/tools/profiling/async-profiler/</loc></url>
+  <url><loc>https://jvm.tools/tools/profiling/visualvm/</loc></url>
+  <url><loc>https://jvm.tools/tools/profiling/jmc/</loc></url>
+  <url><loc>https://jvm.tools/tools/memory/eclipse-mat/</loc></url>
+  <url><loc>https://jvm.tools/tools/memory/gc-log-analysis/</loc></url>
+  <url><loc>https://jvm.tools/tools/bytecode/byte-buddy/</loc></url>
+  <url><loc>https://jvm.tools/tools/build/maven-vs-gradle/</loc></url>
+  <url><loc>https://jvm.tools/tools/bytecode/asm/</loc></url>
+  <url><loc>https://jvm.tools/tools/testing/jmh/</loc></url>
+  <url><loc>https://jvm.tools/guides/</loc></url>
+  <url><loc>https://jvm.tools/guides/jvm-flags/</loc></url>
+  <url><loc>https://jvm.tools/guides/heap-dump-analysis/</loc></url>
+  <url><loc>https://jvm.tools/guides/thread-dump-analysis/</loc></url>
+  <url><loc>https://jvm.tools/books/</loc></url>
+</urlset>
