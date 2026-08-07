@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts-dist/generate.js",
+    "build": "node -e \"require('fs').mkdirSync('site-public',{recursive:true})\"",
+    "build:gen": "node scripts-dist/generate.js",
     "build:source": "bun scripts/generate.ts",
     "preview": "bun preview.ts",
     "bundle:gen": "bun build scripts/generate.ts --target=node --format=esm --outdir=scripts-dist"

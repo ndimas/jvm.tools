@@ -1,11 +1,6 @@
-# Cloudflare Pages configuration
-# Build generates the static site into site-public/ which Pages serves.
-# The bundled Node entry runs on the Pages build image (no bun required).
-# Regenerate bundle after editing scripts/: bun build ... --outdir=scripts-dist
-
 name = "jvm-tools"
 compatibility_date = "2026-08-07"
 pages_build_output_dir = "site-public"
 
 [build]
-command = "node scripts-dist/generate.js"
+command = "mkdir -p site-public"
