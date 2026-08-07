@@ -1,20 +1,12 @@
-# Cloudflare Pages configuration (https://developers.cloudflare.com/pages/)
-# Attach this repo to a Cloudflare Pages project OR run:  npx wrangler pages deploy .
-# The build regenerates the static site with Bun; output is served from the repo root,
-# which must match where Cloudflare Pages expects files (pages_build_output_dir = ".").
+# Cloudflare Pages configuration
+# Build generates the static site; output is served from the repo root.
+# Uses a pre-bundled Node entry (scripts-dist/generate.js) so no bun is required
+# on the Pages build image. Regenerate the bundle locally after editing scripts/:
+#   bun build scripts/generate.ts --target=node --format=esm --outdir=scripts-dist
 
 name = "jvm-tools"
-
-# latest compatibility date (bump as Cloudflare recommends)
 compatibility_date = "2026-08-07"
-
-# Serve the generated static site from the repo root
 pages_build_output_dir = "."
 
 [build]
-command = "bun scripts/generate.ts"
-
-# (Optional) The domain you've configured in Cloudflare Pages.
-# Uncomment after you've added the project:
-# [env.production]
-#   routes = []
+command = "node scripts-dist/generate.js"
