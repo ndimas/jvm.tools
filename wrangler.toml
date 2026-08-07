@@ -1,6 +1,3 @@
 name = "jvm-tools"
 compatibility_date = "2026-08-07"
 pages_build_output_dir = "site-public"
-
-[build]
-command = "mkdir -p site-public"
