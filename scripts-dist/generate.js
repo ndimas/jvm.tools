@@ -1811,6 +1811,7 @@ var sitemapRobots = function() {
   console.log("-> site/sitemap.xml, site/robots.txt");
 };
 var ctaBand = function() {
+  return "";
   const action = SIGNUP_URL ? 'action="' + SIGNUP_URL + '" method="POST"' : 'onsubmit="return false"';
   const handler = `<script>
     (function(){

@@ -294,7 +294,9 @@ const STYLES = importedStyles; // see import below
 
 
 // Renders the CTA band. Non-functional until SIGNUP_URL is set.
+// HIDDEN: subscription/lead-capture button is disabled (returns empty band).
 function ctaBand(){
+  return '';
   const action = SIGNUP_URL ? 'action="'+SIGNUP_URL+'" method="POST"' : 'onsubmit="return false"';
   const handler = `<script>
     (function(){
