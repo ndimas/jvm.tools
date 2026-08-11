@@ -7,6 +7,7 @@
   <url><loc>https://jvm.tools/tools/bytecode/</loc></url>
   <url><loc>https://jvm.tools/tools/build/</loc></url>
   <url><loc>https://jvm.tools/tools/testing/</loc></url>
+  <url><loc>https://jvm.tools/tools/kubernetes/</loc></url>
   <url><loc>https://jvm.tools/tools/jvm-cli/jcmd/</loc></url>
   <url><loc>https://jvm.tools/tools/jvm-cli/jfr/</loc></url>
   <url><loc>https://jvm.tools/tools/jvm-cli/jmap/</loc></url>
@@ -21,6 +22,7 @@
   <url><loc>https://jvm.tools/tools/build/maven-vs-gradle/</loc></url>
   <url><loc>https://jvm.tools/tools/bytecode/asm/</loc></url>
   <url><loc>https://jvm.tools/tools/testing/jmh/</loc></url>
+  <url><loc>https://jvm.tools/tools/kubernetes/jvm-tuning-kubernetes/</loc></url>
   <url><loc>https://jvm.tools/guides/</loc></url>
   <url><loc>https://jvm.tools/guides/jvm-flags/</loc></url>
   <url><loc>https://jvm.tools/guides/heap-dump-analysis/</loc></url>

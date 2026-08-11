@@ -1072,6 +1072,99 @@ export const DEEP_DIVES: DeepDive[] = [
       }
     ],
     "updated": "August 2026"
+  },
+  {
+    "slug": "jvm-tuning-kubernetes",
+    "category": "kubernetes",
+    "toolSlug": "container-awareness",
+    "h1": "JVM Tuning Best Practices in Kubernetes",
+    "metaTitle": "JVM Tuning Best Practices in Kubernetes: Heap, GC, Limits & Flags",
+    "metaDescription": "Best practices for tuning the JVM in Kubernetes pods: -Xmx sizing vs pod limits, MaxRAMPercentage, GC choice, container awareness, JFR and Prometheus monitoring.",
+    "intro": [
+      "Kubernetes changes the JVM tuning job. A JVM pod is not a server you control — it is a cgroup-capped process that can be rescheduled, restarted and scaled at will. Set memory wrong and Kubernetes kills the pod; set CPU lazy and you leave capacity idle while paying for it.",
+      "This guide covers the practical, repeatable rules for running Java in Kubernetes: how modern JDKs read container limits, how to size -Xmx (or better MaxRAMPercentage) against the pod memory limit, how to pick a garbage collector per workload, and how to get diagnostics out of a pod without redeploying.",
+      "It is general, distribution-agnostic guidance — it applies whether you run OpenJDK, Temurin, Amazon Corretto, Zulu or GraalVM on any k8s platform."
+    ],
+    "useWhen": [
+      "You are containerizing an existing Java service and want it to stop getting OOMKilled at startup or under load",
+      "You are deciding on -Xmx vs MaxRAMPercentage and memory requests/limits for a new JVM workload",
+      "You need to choose a GC — G1, ZGC, Shenandoah or Parallel — for latency- vs throughput-sensitive pods",
+      "You want to capture diagnostics (JFR, Prometheus metrics, heap dumps) from ephemeral pods without a redeploy"
+    ],
+    "avoidWhen": [
+      "You are tuning a long-lived, single-machine JVM that always sees all the host's RAM and CPU",
+      "You only need a correct memory request and a default JDK is already behaving well — don't over-flag",
+      "Your pods already set precise fixed flags and you are looking for a broader architecture question, not a tuning rule"
+    ],
+    "basics": [
+      {
+        "title": "1. Let the JVM see the container's limits (Container Awareness)",
+        "body": [
+          "Since JDK 8u191 and Java 10, the JVM reads cgroup limits automatically via -XX:+UseContainerSupport (on by default in Java 10+). It sizes the max heap and defaults from the container's memory limit, not the host's total RAM — so a 512Mi pod limit on a 32Gi host does not get an 8Gi heap it was never allowed to use.",
+          "Verify it is active by checking the effective flag in the running JVM: jcmd <pid> VM.flags | grep UseContainerSupport, or run -XshowSettings:vm -version and read the 'max heap size' line against your pod's limit.",
+          "Do not guess the container's RAM: use the percentage flags instead of a hard -Xmx. The lineage of the JDK matters — Temurin/OpenJDK, Corretto, Zulu and GraalVM all enable container support, but each ships its own defaults and patch levels."
+        ],
+        "code": "# Confirm container awareness is on and see the computed max heap\n# (run inside the pod against a live PID)\nkubectl exec deploy/myapp -- sh -c 'jcmd $(pgrep -f MainClass) VM.flags | grep -i container'\n\n# See what the JVM believes the available memory is\nkubectl exec deploy/myapp -- java -XshowSettings:vm -version"
+      },
+      {
+        "title": "2. Size memory: prefer MaxRAMPercentage over a fixed -Xmx",
+        "body": [
+          "The single most important rule: size the heap against the container's memory limit, leaving room for the JVM's metaspace, thread stacks, JIT code cache and off-heap buffers. A hard -Xmx that ignores the pod limit is how pods get OOMKilled the moment traffic spikes.",
+          "With -XX:MaxRAMPercentage=75 and a pod memory limit of 1Gi, the JVM sizes its max heap to ~768Mi automatically, leaving ~256Mi for native overhead. The same manifest scaled to a 4Gi limit scales the heap proportionally — no edit needed.",
+          "Reserve enough headroom for native memory: 25% is a common cushion, but account for off-heap buffers (Netty direct memory, Hazelcast, Lucene), JNI, or thread stacks. The JVM's overhead is roughly metaspace + code cache + thread stacks + GC structures; peak native usage often exceeds a naive guess.",
+          "If you must use a fixed value (some frameworks/OSGi want one), set it through the pod env (JAVA_OPTS or an env-var-backed entrypoint), never baked into the image with no coupling to the request/limit."
+        ],
+        "code": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: myapp\nspec:\n  template:\n    spec:\n      containers:\n      - name: app\n        image: temurin:21-jre\n        command: [\"java\"]\n        args:\n          - \"-XX:MaxRAMPercentage=75\"\n          - \"-XX:ActiveProcessorCount=2\"\n          - \"-jar\", \"app.jar\"\n        resources:\n          requests:\n            memory: \"512Mi\"\n            cpu: \"500m\"\n          limits:\n            memory: \"1Gi\"   # heap gets 75% of this"
+      },
+      {
+        "title": "3. Request and limit memory deliberately; use ratio flags, not absolutes",
+        "body": [
+          "Set both requests and limits, and never let the limit silently drive heap sizing alone. The request is what the scheduler reserves and what HPA reads; the limit is the cgroup cap. If limit equals request, the pod is hard-pinned to that budget and gives the JVM no headroom — a fractional CPU or a cold start can trip the limit.",
+          "A common pattern is request = the JVM's guaranteed working set and limit = modest burst headroom, so the GC and native layers are not squeezed into OOMKilled. For CPU, GC and compiler threads scale with detected cores: a CPU limit above the request can let the JVM overshoot available CPU and cause throttling pause spikes.",
+          "Prefer -XX:ActiveProcessorCount (or the JDK 15+ container detection) over guessing; it keeps GC threading stable regardless of the cgroup CPU quota."
+        ]
+      },
+      {
+        "title": "4. Pick the garbage collector by workload type",
+        "body": [
+          "In Kubernetes, one collector does not fit all. For the typical latency-sensitive microservice pod (p99 response time, low tail latency), ZGC or Shenandoah keep pauses under ~1ms and suit today's heap sizes. G1 is the safe, well-understood default and the best all-rounder for mid-sized heaps. If your pod is a batch job or throughput-oriented worker, Parallel GC often wins on raw throughput with larger pauses.",
+          "Constrained-heap pods (under ~512Mi) can suffer from G1's region overhead and ZGC's multi-branch barriers; a small pod with a tight memory limit is often better served by G1 tuned small, or even SerialGC for very small heaps. In every case, verify the collector against the real workload with JFR, not by convention."
+        ],
+        "code": "# Latency-sensitive microservice (default on modern JDKs is G1)\n-XX:+UseZGC                                  # or -XX:+UseShenandoahGC\n\n# Throughput-oriented batch / worker pod\n-XX:+UseParallelGC\n\n# Very small constrained-heap pod (< 512Mi)\n-XX:+UseG1GC -XX:MaxGCPauseMillis=100         # or -XX:+UseSerialGC below ~128Mi"
+      },
+      {
+        "title": "5. Get diagnostics out of ephemeral pods",
+        "body": [
+          "Pods disappear. Capturing JFR recordings, heap or thread dumps from a running pod without a redeploy is essential — and jcmd works inside any pod that ships a JDK image (a JRE-only image surrenders these reflexes). Use kubectl exec + jcmd to start/stop a recording on demand, then copy it out.",
+          "For always-on observability, run the Prometheus JMX Exporter as a Java agent (or sidecar) so JVM metrics — heap, GC pauses, threads, classes — are scraped by your Prometheus/k8s monitoring. Because a JVM pod can be rescheduled mid-analysis, prefer streaming or pushing monitoring data out rather than relying on a local file that dies with the pod."
+        ],
+        "code": "# Start a 2-minute JFR recording in a running pod\nkubectl exec deploy/myapp -- sh -c \\\n  'jcmd $(pgrep -f MainClass) JFR.start duration=120s filename=/tmp/app.jfr settings=profile'\n\n# Copy it out before the pod is deleted\nkubectl cp myapp-pod:/tmp/app.jfr ./app.jfr   # examine with JDK Mission Control\n\n# Or stream JVM metrics via the JMX Exporter agent\n-XX:+UnlockDiagnosticVMOptions -XX:+ExportDynamicAttach \\\n   -javaagent:/opt/jmx_prometheus_javaagent.jar=8080:/opt/config.yaml"
+      },
+      {
+        "title": "6. Graceful shutdown & HPA so you only pay for what you need",
+        "body": [
+          "Java shutdown is slow: JIT threads, GC and the JVM shutdown hooks need time. Configure lifecycle preStop hooks and terminationGracePeriodSeconds so a rolling deploy or scale-down doesn't kill a JVM mid-scenario — and so JFR/thread dumps aren't lost on the way out.",
+          "Pair the JVM tuning with HorizontalPodAutoscaler (HPA) on a relevant metric (often request latency or custom requests/sec via Prometheus, not raw CPU, which Java services spike). Correct requests keep the scheduler from stacking too many pods on a node where the JVM's native overhead plus heap can no longer both fit."
+        ],
+        "code": "lifecycle:\n  preStop:\n    exec:\n      command: [\"sh\", \"-c\", \"jcmd $(pgrep -f MainClass) JFR.stop name=default || true; sleep 5\"]\nterminationGracePeriodSeconds: 60\n\n---\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: myapp\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: myapp\n  minReplicas: 2\n  maxReplicas: 12\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 70"
+      }
+    ],
+    "quickstart": [
+      {
+        "title": "A safe starting point for most JVM service pods",
+        "body": [
+          "Start from container-aware JDK defaults, size the heap as a percentage of the pod limit, and confirm with the JVM's own reported settings. Tune GC only after you have JFR data showing a specific problem."
+        ],
+        "code": "# manifest snippet: a generally safe JVM habit\nargs: [\"-XX:MaxRAMPercentage=75\", \"-jar\", \"/app/app.jar\"]\nresources:\n  limits:    { memory: \"1Gi\", cpu: \"1000m\" }\n  requests:  { memory: \"512Mi\", cpu: \"250m\" }\n\n# sanity check from inside the pod\nkubectl exec deploy/myapp -- java -XshowSettings:vm -version | grep 'max heap'\n# => should be ~768.00M for a 1Gi limit at MaxRAMPercentage=75"
+      }
+    ],
+    "faq": [
+      { "q": "Why is my pod OOMKilled even though the heap looks small?", "a": "The JVM's native footprint — metaspace, thread stacks, JIT code cache, GC structures, and any off-heap direct memory — sits outside -Xmx. With a tight pod limit the cgroup killer can trigger before the heap is full. Reduce MaxRAMPercentage, add native headroom to the limit, and check RSS vs heap with kubectl top / docker stats. Netty/Lucene-style off-heap allocations are a common culprit." },
+      { "q": "-Xmx in MB or MaxRAMPercentage — which should I use?", "a": "Prefer -XX:MaxRAMPercentage so the heap scales with the pod's memory limit and survives manifest changes. Fall back to a hard -Xmx only when a framework or a non-% constraint requires an exact heap; even then set it via an env var coupled to the resource limit." },
+      { "q": "My pod is being CPU-throttled — do I need more CPU?", "a": "Often the JVM is spawning GC/compiler threads for the host's core count while the cgroup caps CPU. Set -XX:ActiveProcessorCount to the container's expected CPU, or raise the CPU limit. Watch GC pause spikes tied to cgroup capping before buying more CPU." },
+      { "q": "Is ZGC the right choice for every k8s service pod?", "a": "No. ZGC trades some CPU and memory for sub-millisecond pauses, which matters for latency-critical microservices with sizable heaps. For small constrained heaps or throughput-bound batch pods, G1 or Parallel are simpler and cheaper. Validate with JFR, not convention." }
+    ],
+    "updated": "August 2026"
   }
 ];
 

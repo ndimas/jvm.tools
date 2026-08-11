@@ -128,7 +128,23 @@ export const CATEGORIES: Category[] = [
       "Load & API testing: Gatling, k6",
     ],
   },
-  // Extra "concepts/quick guides" top-level (not a tool hub)
+  {
+    slug: "kubernetes",
+    navLabel: "Kubernetes",
+    title: "JVM Settings & Tuning in Kubernetes",
+    metaTitle: "JVM Settings in Kubernetes: Heap, GC, Limits & Flags for Pods",
+    metaDescription: "The practical guide to configuring JVM settings in Kubernetes: -Xmx, GC choice, resource limits, Java container awareness, Java Flight Recorder and Prometheus in pods.",
+    intro: [
+      "Running Java in Kubernetes changes how you think about JVM settings. The JVM no longer sees a fixed machine — it sees the CPU and memory limits you place on the pod, and it must cope with cgroup capping, container sharding and the container's ephemeral nature. Get the memory settings wrong and you get either OOMKilled pods or heap starvation.",
+      "This category covers how to reason about JVM memory and GC flags in a containerized world: how modern JDKs auto-detect container limits, how to size the heap relative to the pod memory limit, which collectors suit latency- vs throughput-bound service pods, and how to route diagnostics (JFR, Prometheus metrics) out of a pod and into your observability stack.",
+    ],
+    bullets: [
+      "Understand container-aware JVM defaults (UseContainerSupport, MaxRAMPercentage)",
+      "Size the heap safely relative to the pod memory limit",
+      "Choose GC / tuning by service type: G1, ZGC, Shenandoah, Parallel",
+      "Sidecars & agents: JMX exporter, JFR streaming, Prometheus",
+    ],
+  },
 ];
 
 // ------------------------------------------------------------------
@@ -204,6 +220,13 @@ export const TOOLS: Tool[] = [
   { slug: "jmh", name: "JMH (Java Microbenchmark Harness)", url: "https://github.com/openjdk/jmh", desc: "OpenJDK's harness for writing correct microbenchmarks — it deals with warm-up, dead-code elimination and JIT effects so your numbers mean something.", category: "testing", license: "GPLv2 w/ CE", kind: "open-source" },
   { slug: "gatling", name: "Gatling", url: "https://gatling.io/", desc: "A high-performance, scenario-based load-testing tool that records realistic user flows and reports rich KPIs; easy to script in Scala or Java.", category: "testing", license: "Apache-2.0 (core)", kind: "open-source" },
   { slug: "k6", name: "Grafana k6", url: "https://k6.io/", desc: "A developer-friendly load-testing tool scripted in JavaScript that executes with a Go engine; widely used for API and k8s load testing.", category: "testing", license: "AGPL-3.0 (OSS core)", kind: "open-source" },
+
+  // ---- kubernetes (JVM settings in K8s) ----
+  { slug: "container-awareness", name: "JVM Container Awareness (UseContainerSupport)", url: "https://docs.oracle.com/en/java/javase/21/vm/container-awareness.html", desc: "Modern JDKs auto-detect cgroup CPU/memory limits inside containers, letting -XX:MaxRAMPercentage scale the heap to the pod's limit instead of the host's RAM.", category: "kubernetes", license: "Oracle Free Use", kind: "bundled-jdk" },
+  { slug: "jmx-exporter-k8s", name: "Prometheus JMX Exporter (in pods)", url: "https://github.com/prometheus/jmx_exporter", desc: "A Java agent exposing JVM metrics — heap, GC, threads, classes — as Prometheus metrics, the standard sidecar-agent pattern for monitoring JVM pods.", category: "kubernetes", license: "Apache-2.0", kind: "open-source" },
+  { slug: "jfr-streaming-k8s", name: "JFR Streaming & jcmd in Pods", url: "https://github.com/mihai-stsd/JFR-live", desc: "Start Java Flight Recorder recordings in a running pod with jcmd, or stream the JFR event stream live to an external analyzer — no redeploy, no agent.", category: "kubernetes", license: "Apache-2.0", kind: "open-source" },
+  { slug: "jvm-exporter", name: "jvm.Stack / JVM Status", url: "https://github.com/jvm-tools/jvm_exporter", desc: "Experimental JVM binary exporter for Prometheus that mirrors a JVM's status the way node_exporter mirrors a host; useful when an agent is not possible.", category: "kubernetes", license: "Apache-2.0", kind: "open-source" },
+  { slug: "kubernetes-hpa", name: "Kubernetes HPA & Metrics Server", url: "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/", desc: "The control loop that scales JVM pod replicas on CPU/memory (via Metrics Server) so you can only pay for the JVM capacity the traffic actually needs.", category: "kubernetes", license: "Apache-2.0", kind: "managed" },
 ];
 
 // ------------------------------------------------------------------
